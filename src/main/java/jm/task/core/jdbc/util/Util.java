@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class Util {
 
-    // JDBC Connection
+
     private static final String URL = "jdbc:mysql://localhost:3306/userdata?verifyServerCertificate=false&useSSL=true";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
@@ -24,6 +24,8 @@ public class Util {
     public Util() {
 
     }
+
+    // JDBC Connection
 
     public Connection getConnection() {
         try {
@@ -36,17 +38,15 @@ public class Util {
 
     // Hibernate connection configuration
 
-
     public SessionFactory getSessionFactory() {
 
-        // Hibernate 5.4 SessionFactory example without XML
         Map<String, String> settings = new HashMap<>();
         settings.put("connection.driver_class", "com.mysql.jdbc.Driver");
         settings.put("dialect", "org.hibernate.dialect.MySQL8Dialect");
         settings.put("hibernate.connection.url",
-                "jdbc:mysql://localhost:3306/userdata?verifyServerCertificate=false&useSSL=true");
-        settings.put("hibernate.connection.username", "root");
-        settings.put("hibernate.connection.password", "root");
+                URL);
+        settings.put("hibernate.connection.username", USERNAME);
+        settings.put("hibernate.connection.password", PASSWORD);
         settings.put("hibernate.show_sql", "true");
         settings.put("hibernate.format_sql", "true");
 
@@ -57,8 +57,6 @@ public class Util {
         metadataSources.addAnnotatedClass(User.class);
         Metadata metadata = metadataSources.buildMetadata();
 
-        // here we build the SessionFactory (Hibernate 5.4)
-        SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
-        return sessionFactory;
+        return metadata.getSessionFactoryBuilder().build();
     }
 }
